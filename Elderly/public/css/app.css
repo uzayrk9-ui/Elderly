@@ -1,0 +1,792 @@
+/* =========================================================================
+   Elder Ease — design tokens + accessible global base
+   (app.css loads after each page stylesheet, so this is the foundation)
+   ========================================================================= */
+:root {
+  --brand:        #2563eb;  /* calm, trustworthy blue */
+  --brand-dark:   #1d4ed8;  /* hover / pressed        */
+  --brand-tint:   #dbeafe;  /* soft blue surface      */
+  --brand-tint-2: #eff6ff;
+  --accent:       #f97316;  /* warm CTA orange        */
+  --accent-dark:  #ea580c;
+  --ink:          #0f172a;  /* headings  (16:1)       */
+  --body:         #1e293b;  /* body text (13:1)       */
+  --muted:        #475569;  /* secondary (7:1)        */
+  --line:         #e2e8f0;  /* borders                */
+  --surface:      #ffffff;
+  --bg:           #f8fafc;  /* soft, easy-on-eyes page bg */
+  --font-body: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-head: 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 30px rgba(15, 23, 42, 0.12);
+  --radius: 12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 17px;            /* large, comfortable base for older readers */
+  line-height: 1.65;
+  color: var(--body);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+p { max-width: 70ch; }       /* comfortable line length */
+.home-title p, .cart-title p, .support-title p, .edit-profile-title p,
+.confirm-sub, .account-overview p { max-width: none; }
+
+::selection { background: var(--brand-tint); color: var(--ink); }
+
+/* Interactive affordances */
+a, button { cursor: pointer; }
+button { font-family: inherit; }
+a { transition: color 0.18s ease; }
+button, .btn-primary, .btn-small, .btn-page, .filter-tab, .buy-now,
+.add-to-cart-btn, .checkout-button, .submit-btn, .reorder-btn,
+.cancel-order-btn, .notify-btn, .remove-item, .wishlist-btn {
+  transition: background-color 0.18s ease, color 0.18s ease,
+              box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+/* Accessible focus ring for keyboard users (WCAG) */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* Larger, easier nav touch targets */
+header nav ul li a {
+  display: inline-block;
+  padding: 0.35em 0.2em;
+  min-height: 44px;
+  line-height: 1.9;
+}
+
+/* Sticky, subtly elevated header so navigation is always reachable */
+header { position: sticky; top: 0; z-index: 50; }
+
+/* Inputs: comfortable, consistent, clearly focusable */
+input, select, textarea { font-family: inherit; }
+input:focus, select:focus, textarea:focus { border-color: var(--brand); }
+
+/* Cards lift gently on hover without shifting layout */
+.product-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+
+/* Honor users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Shared additions layered on top of the per-page stylesheets */
+
+/* Header search bar */
+.search-form {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 420px;
+  margin: 0 2em;
+}
+.search-form input[type="search"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+}
+.search-form button {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: #f97316;
+  color: #fff;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.search-form button:hover { background-color: #ea580c; }
+
+@media (max-width: 768px) {
+  .search-form {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin: 1em 0 0;
+  }
+}
+
+/* Category filter tabs (Shop More) */
+.category-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
+  margin-bottom: 2.5em;
+}
+.filter-tab {
+  text-decoration: none;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+  padding: 0.5em 1.4em;
+  border-radius: 999px;
+  font-size: 1.05em;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.filter-tab:hover { background-color: #dbeafe; }
+.filter-tab.active {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* Search autocomplete dropdown */
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  list-style: none;
+  margin: 0;
+  padding: 0.3em 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+.search-suggestions .suggestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  padding: 0.7em 1em;
+  cursor: pointer;
+  color: #1e293b;
+  font-size: 1em;
+}
+.search-suggestions .suggestion.active,
+.search-suggestions .suggestion:hover {
+  background-color: #dbeafe;
+}
+.search-suggestions .s-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #dbeafe;
+  flex-shrink: 0;
+}
+.search-suggestions .s-name { color: #2563eb; font-weight: 500; flex: 1; }
+.search-suggestions .s-price { color: #475569; white-space: nowrap; }
+
+.cart-count {
+  background: #f97316;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 0.55em;
+  font-size: 0.85em;
+  margin-left: 0.3em;
+}
+
+/* Flash messages */
+.flash {
+  max-width: 900px;
+  margin: 1em auto 0;
+  padding: 1em 1.5em;
+  border-radius: 8px;
+  font-size: 1.1em;
+  text-align: center;
+}
+.flash-success { background: #e3f5e8; color: #1b6b34; border: 1px solid #b6e0c2; }
+.flash-error   { background: #fde7e7; color: #a11d1d; border: 1px solid #f2bcbc; }
+
+/* Auth forms (login / register) reuse the edit-profile look */
+.auth-form {
+  background-color: #f8fafc;
+  padding: 2em;
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 0 auto 2em;
+}
+.auth-switch {
+  text-align: center;
+  font-size: 1.1em;
+  color: #475569;
+}
+.auth-switch a { color: #2563eb; font-weight: bold; }
+
+/* Empty cart message */
+.empty-cart {
+  text-align: center;
+  font-size: 1.3em;
+  color: #475569;
+  margin: 2em 0;
+}
+.empty-cart a { color: #2563eb; font-weight: bold; }
+
+/* Inline add-to-cart / quantity forms shouldn't disturb layout */
+.inline-form { display: inline; margin: 0; }
+
+/* Product-card titles/images link to the detail page without looking like raw links */
+.product-card h3 a,
+.cart-item .item-details h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.product-card h3 a:hover,
+.cart-item .item-details h3 a:hover { text-decoration: underline; }
+.product-card img { display: block; }
+
+/* "View Details" link under Shop More cards */
+.view-details {
+  display: inline-block;
+  margin-top: 1em;
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: none;
+}
+.view-details:hover { text-decoration: underline; }
+.order-meta { color: #64748b; font-size: 0.95em; }
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  border-radius: 999px;
+  font-size: 0.85em;
+  font-weight: bold;
+  text-transform: capitalize;
+  vertical-align: middle;
+}
+.status-processing { background: #fff2d6; color: #9a6700; }
+.status-shipped    { background: #dbeafe; color: #2563eb; }
+.status-delivered  { background: #e3f5e8; color: #1b6b34; }
+.status-cancelled  { background: #fde7e7; color: #a11d1d; }
+
+/* Order list on the account page */
+.order-list { list-style: none; margin: 0; padding: 0; }
+.order-list li {
+  padding: 1em 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.order-list li:last-child { border-bottom: none; }
+.order-line-main {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  flex-wrap: wrap;
+}
+.order-line-main a { font-size: 1.15em; font-weight: bold; color: #2563eb; text-decoration: none; }
+.order-line-main a:hover { text-decoration: underline; }
+.order-line-main .order-meta { font-weight: bold; color: #2563eb; }
+.order-line-sub { margin-top: 0.4em; font-size: 1em; color: #475569; }
+
+/* Account order pagination */
+.order-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5em;
+  margin-top: 1.5em;
+}
+.btn-page {
+  background-color: #2563eb;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5em 1.2em;
+  border-radius: 5px;
+  font-size: 1em;
+}
+.btn-page:hover { background-color: #1d4ed8; }
+.btn-page.disabled { background-color: #cbd5e1; cursor: default; }
+.order-pagination .page-number { color: #1e293b; font-size: 1.05em; }
+
+/* Order detail table */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5em;
+}
+.order-table th, .order-table td {
+  padding: 0.9em 1em;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 1.05em;
+}
+.order-table th { color: #2563eb; }
+.order-table tfoot td {
+  border-top: 2px solid #2563eb;
+  border-bottom: none;
+  font-size: 1.2em;
+  padding-top: 1em;
+}
+.order-total-label { text-align: right; font-weight: bold; color: #1e293b; }
+.order-total { font-weight: bold; color: #2563eb; }
+.back-link {
+  display: inline-block;
+  margin-top: 1.5em;
+  color: #2563eb;
+  font-weight: bold;
+  text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+
+/* Cancel order button */
+.cancel-order-btn {
+  background-color: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 0.8em 1.6em;
+  border-radius: 5px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.cancel-order-btn:hover { background-color: #b91c1c; }
+.cancelled-note { color: #a11d1d; font-weight: bold; }
+
+/* Order actions row */
+.order-actions { display: flex; gap: 1em; flex-wrap: wrap; align-items: center; }
+.reorder-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.8em 1.6em;
+  border-radius: 5px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.reorder-btn:hover { background-color: #1d4ed8; }
+
+/* Wishlist button on cards + detail */
+.product-card { position: relative; }
+.wishlist-form { position: absolute; top: 12px; right: 12px; z-index: 2; }
+.wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  color: #dc2626;
+  font-size: 1.4em;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.wishlist-btn:hover { transform: scale(1.12); background: #fff; }
+.wishlist-btn.saved { background: #dc2626; color: #fff; }
+/* On the product detail page, show it inline next to the title */
+.detail-wishlist { display: inline-block; margin-left: 0.5em; vertical-align: middle; }
+.detail-wishlist .wishlist-form { position: static; }
+
+/* Notify-me (back in stock) button */
+.notify-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.8em 1.6em;
+  border-radius: 5px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.notify-btn:hover { background-color: #1d4ed8; }
+
+/* Stock status labels (storefront) */
+.stock-status { font-size: 1.05em; font-weight: bold; margin: 0.5em 0; }
+.stock-status.in { color: #1b6b34; }
+.stock-status.low { color: #9a6700; }
+.stock-status.out { color: #a11d1d; }
+
+/* Disabled add-to-cart buttons */
+button[disabled] {
+  background-color: #cbd5e1 !important;
+  cursor: not-allowed;
+  color: #fff;
+}
+
+/* Consistent footer across all pages */
+footer {
+  background-color: #2563eb;
+  color: #fff;
+  text-align: center;
+  padding: 1.5em;
+  margin-top: 3em;
+  font-size: 1.05em;
+}
+
+/* =========================================================================
+   Warm Civic polish layer (loads last — refines shared components)
+   ========================================================================= */
+
+/* Full-width header, centered content for a real-product feel */
+header { box-shadow: 0 2px 14px rgba(15, 23, 42, 0.14); }
+header .logo h1 { font-family: var(--font-head); font-weight: 700; }
+main { max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+/* Section headings get a short warm accent underline */
+#featured-products h2, #popular-products h2, #more-products h2 {
+  position: relative;
+  padding-bottom: 0.5em;
+}
+#featured-products h2::after, #popular-products h2::after, #more-products h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Product cards — soft, consistent, gentle lift (no layout shift) */
+.product-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+/* Uniform card imagery -> tidy, aligned grids */
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.product-card h3 { font-size: 1.3em; line-height: 1.3; }
+.product-card .price { font-size: 1.4em; }
+
+/* Unified primary action buttons — large, rounded, unmistakable */
+.product-card button, .buy-now, .add-to-cart-btn, .checkout-button,
+.submit-btn, .reorder-btn, .notify-btn {
+  border-radius: 10px;
+  font-weight: 700;
+  min-height: 48px;
+  letter-spacing: 0.01em;
+}
+.product-card button, .buy-now { width: 100%; }
+.product-card button:hover, .buy-now:hover, .add-to-cart-btn:hover,
+.checkout-button:hover, .submit-btn:hover, .reorder-btn:hover, .notify-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.22);
+}
+/* The single most important action on a product page is warm orange */
+.add-to-cart-btn { background: var(--accent); box-shadow: 0 6px 14px rgba(249,115,22,0.28); }
+.add-to-cart-btn:hover { background: var(--accent-dark); box-shadow: 0 9px 18px rgba(249,115,22,0.34); }
+.checkout-button { background: var(--accent); }
+.checkout-button:hover { background: var(--accent-dark); }
+
+/* Flash messages: friendlier, with a leading accent bar */
+.flash {
+  border-left: 5px solid currentColor;
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+/* Footer refinement */
+footer {
+  background: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* =========================================================================
+   Page-wide polish — titles, forms, cards (applies to every page)
+   ========================================================================= */
+
+/* Consistent page-title bands (cart, support, edit profile, wishlist, etc.) */
+.cart-title, .support-title, .edit-profile-title {
+  text-align: center;
+  margin: 0.5em 0 2.5em;
+}
+.cart-title h1, .support-title h1, .edit-profile-title h1 {
+  font-size: clamp(2em, 4vw, 2.8em);
+  margin-bottom: 0.3em;
+}
+.cart-title p, .support-title p, .edit-profile-title p {
+  color: var(--muted);
+  font-size: 1.2em;
+}
+#more-products h2, .account-overview h2 {
+  font-family: var(--font-head);
+}
+
+/* Comfortable, clearly-focusable form controls everywhere */
+.form-group input, .form-group textarea, .form-group select,
+.auth-form input, .admin-form input, .admin-form select, .admin-form textarea,
+#edit-profile-form input, #edit-profile-form textarea,
+#contact-us input, #contact-us textarea,
+.date-filter input[type="date"], .status-form select, .qty-field input {
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85em 1em;
+  font-size: 1.05em;
+  background: #fff;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus,
+.auth-form input:focus, .admin-form input:focus, .admin-form select:focus,
+.admin-form textarea:focus, #edit-profile-form input:focus,
+#edit-profile-form textarea:focus, #contact-us input:focus, #contact-us textarea:focus,
+.qty-field input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+.form-group label, .admin-form label {
+  font-family: var(--font-head);
+  font-weight: 500;
+}
+
+/* Auth (login / register) as a clean elevated card */
+.auth-form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 2.2em;
+}
+
+/* Contact + edit-profile forms get the same card treatment */
+#contact-us, #edit-profile-form {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Cart items: cleaner cards */
+.cart-item {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.cart-summary {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  padding: 1.8em;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Account profile + cards */
+.profile-card, .account-card {
+  border: 1px solid var(--line);
+}
+
+/* Quantity controls a touch larger for easy tapping */
+.quantity-controls button { min-width: 44px; min-height: 44px; border-radius: 8px; }
+
+/* =========================================================================
+   Unified glassmorphic header — brings the landing's look to EVERY page
+   (loads after each page stylesheet, so it overrides the old blue bar)
+   ========================================================================= */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.85em 1.6em;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--ink);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+}
+header .logo a { text-decoration: none; display: inline-block; }
+header .logo h1 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+header .logo h1 sup { font-size: 0.5em; top: -0.9em; color: var(--brand); }
+
+header nav ul { gap: 1.5em; }
+header nav ul li a {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+}
+header nav ul li a:hover { color: var(--brand); }
+/* "Home" reads as the current section on the storefront entry */
+header nav ul li:first-child a { color: var(--ink); }
+
+/* Search field needs a visible edge on the light bar */
+.search-form input[type="search"] {
+  border: 1.5px solid var(--line);
+  border-right: none;
+  background: #fff;
+  color: var(--ink);
+}
+.search-form input[type="search"]::placeholder { color: #94a3b8; }
+.search-form input[type="search"]:focus {
+  border-color: var(--brand);
+  box-shadow: none;
+}
+
+/* Keep the floating bar tidy on small screens */
+@media (max-width: 768px) {
+  header { border-radius: 0; margin: 0; max-width: none; }
+}
+
+/* Shop department result count */
+.shop-count { text-align: center; color: var(--muted); font-size: 1.05em; margin: -1em 0 1.8em; }
+
+/* =========================================================================
+   UX + hover system — pulls the landing's feel through every page
+   ========================================================================= */
+
+/* Soft, landing-style tinted backdrop for depth (sits behind glass header) */
+body {
+  background:
+    radial-gradient(900px 520px at 100% -8%, rgba(219, 234, 254, 0.55), transparent 60%),
+    radial-gradient(700px 420px at -10% 4%, rgba(255, 237, 213, 0.45), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+/* --- Animated nav underline + active state (both navs) --- */
+header nav ul li a, .landing-menu a { position: relative; }
+header nav ul li a::after, .landing-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0.2em; right: 0.2em; bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+header nav ul li a:hover::after, .landing-menu a:hover::after,
+header nav ul li a.nav-active::after, .landing-menu a.nav-active::after { transform: scaleX(1); }
+header nav ul li:first-child a { color: var(--muted); }   /* drop the old always-ink Home */
+header nav ul li a.nav-active, .landing-menu a.nav-active { color: var(--brand); }
+
+/* --- Header scroll elevation --- */
+header.scrolled, .landing-nav.scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+/* --- Product cards: image zoom + warmer hover border --- */
+.product-card a:has(img) { display: block; overflow: hidden; border-radius: 12px; }
+.product-card a:has(img) img { transition: transform 0.5s cubic-bezier(0.2, 0.6, 0.2, 1); }
+.product-card:hover { border-color: #bcd2ff; }
+.product-card:hover a:has(img) img { transform: scale(1.07); }
+
+/* --- Buttons: lift + glow on hover (consistent everywhere) --- */
+.btn-primary:hover, .product-card button:hover, .buy-now:hover,
+.btn-small:hover, .filter-tab:hover {
+  transform: translateY(-2px);
+}
+.btn-primary:hover, .product-card button:hover, .buy-now:hover {
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+}
+.filter-tab { transition: background-color 0.18s ease, color 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease; }
+.filter-tab:hover { box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18); }
+.filter-tab.active:hover { transform: translateY(-2px); }
+
+/* --- Order/admin table rows highlight on hover --- */
+.order-table tbody tr { transition: background 0.16s ease; }
+.order-table tbody tr:hover { background: var(--brand-tint-2); }
+
+/* --- Content links: sliding underline --- */
+.view-details, .back-link, .auth-switch a, .email-footer a, .empty-cart a {
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease, color 0.18s ease;
+}
+.view-details:hover, .back-link:hover, .auth-switch a:hover,
+.email-footer a:hover, .empty-cart a:hover { background-size: 100% 2px; }
+
+/* --- Trust strip + panels lift gently --- */
+.trust-strip li { transition: transform 0.2s ease; }
+.trust-strip li:hover { transform: translateY(-3px); }
+.account-card, .profile-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.account-card:hover, .profile-card:hover { box-shadow: var(--shadow-md); }
+
+/* --- Quantity / wishlist micro-interactions --- */
+.quantity-controls button:hover { background: var(--brand-dark); transform: translateY(-1px); }
+.wishlist-btn:active { transform: scale(0.92); }
+
+/* --- Back-to-top floating button --- */
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.42);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+}
+.back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:hover { background: var(--accent-dark); transform: translateY(-3px); }
+.back-to-top svg { width: 22px; height: 22px; }
+
+/* --- Flash auto-dismiss transition --- */
+.flash { transition: opacity 0.4s ease, transform 0.4s ease; }
+.flash.flash-hide { opacity: 0; transform: translateY(-10px); }

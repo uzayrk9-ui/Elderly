@@ -1,0 +1,127 @@
+<%- include('partials/head', { title, css: 'admin.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="admin-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="admin-subtitle">Sales, inventory and orders at a glance.</p>
+      </div>
+    </section>
+    <%- include('partials/admin-nav', { adminTab: 'dashboard' }) %>
+
+    <form class="date-filter" action="/admin" method="GET">
+      <label>From <input type="date" name="from" value="<%= filter.from %>" /></label>
+      <label>To <input type="date" name="to" value="<%= filter.to %>" /></label>
+      <button type="submit" class="btn-small">Apply</button>
+      <% if (filter.from || filter.to) { %><a href="/admin" class="btn-small btn-clear">Clear</a><% } %>
+      <% if (filter.from || filter.to) { %>
+        <span class="filter-note">Showing <%= filter.from || '…' %> to <%= filter.to || '…' %></span>
+      <% } %>
+    </form>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value"><%= money(stats.revenue) %></div>
+        <div class="stat-label">Revenue <small>(excl. cancelled)</small></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= stats.paidOrders %></div>
+        <div class="stat-label">Paid Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= money(stats.avgOrder) %></div>
+        <div class="stat-label">Avg Order Value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= stats.allOrders %></div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= stats.productCount %></div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><%= stats.customerCount %></div>
+        <div class="stat-label">Customers</div>
+      </div>
+    </div>
+
+    <div class="dash-columns">
+      <div class="dash-panel">
+        <h2>Orders by Status</h2>
+        <table class="admin-table">
+          <thead><tr><th>Status</th><th>Count</th><th>Value</th></tr></thead>
+          <tbody>
+            <% statuses.forEach(function(s) { %>
+              <% var row = byStatus[s] || { count: 0, total: 0 }; %>
+              <tr>
+                <td><span class="status-badge status-<%= s.toLowerCase() %>"><%= s %></span></td>
+                <td><%= row.count %></td>
+                <td><%= money(row.total) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dash-panel">
+        <h2>Best Sellers</h2>
+        <% if (topProducts.length === 0) { %>
+          <p class="muted">No sales yet.</p>
+        <% } else { %>
+          <table class="admin-table">
+            <thead><tr><th>Product</th><th>Units</th><th>Revenue</th></tr></thead>
+            <tbody>
+              <% topProducts.forEach(function(p) { %>
+                <tr>
+                  <td><%= p.name %></td>
+                  <td><%= p.units %></td>
+                  <td><%= money(p.revenue) %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="dash-panel">
+      <h2>Low Stock <small class="muted">(≤ 5)</small></h2>
+      <% if (lowStock.length === 0) { %>
+        <p class="muted">All products are well stocked.</p>
+      <% } else { %>
+        <table class="admin-table">
+          <thead><tr><th>Product</th><th>Stock</th></tr></thead>
+          <tbody>
+            <% lowStock.forEach(function(p) { %>
+              <tr>
+                <td><%= p.name %></td>
+                <td><span class="stock-pill <%= p.stock <= 0 ? 'out' : 'low' %>"><%= p.stock %></span></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+    <div class="dash-panel">
+      <h2>Recent Orders</h2>
+      <table class="admin-table">
+        <thead><tr><th>#</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>
+          <% recentOrders.forEach(function(o) { %>
+            <tr>
+              <td><a href="/admin/orders/<%= o.id %>">#<%= o.id %></a></td>
+              <td><%= o.customer_name %></td>
+              <td><%= formatDate(o.created_at) %></td>
+              <td><%= money(o.total) %></td>
+              <td><span class="status-badge status-<%= o.status.toLowerCase() %>"><%= o.status %></span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+<%- include('partials/footer') %>

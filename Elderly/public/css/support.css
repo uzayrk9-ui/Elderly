@@ -1,0 +1,194 @@
+/* General Reset */
+body, h1, h2, p, ul, li, input, textarea {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Header Styling (Navigation Bar) */
+header {
+    background-color: #2563eb; /* Blue color */
+    color: white;
+    padding: 1em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+header .logo h1 {
+    font-size: 2.2em;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #f97316; /* Accent color on hover */
+}
+
+/* Main Support Page Layout */
+main {
+    padding: 3em 2em;
+    background-color: #ffffff; /* White background for the main area */
+}
+
+.support-title {
+    text-align: center;
+    margin-bottom: 3em;
+}
+
+.support-title h1 {
+    font-size: 3em;
+    color: #2563eb;
+    margin-bottom: 0.5em;
+}
+
+.support-title p {
+    font-size: 1.2em;
+    color: #475569;
+    line-height: 1.8;
+}
+
+/* Return Policy Section */
+#return-policy {
+    margin-bottom: 3em;
+}
+
+#return-policy h2 {
+    font-size: 2.2em;
+    color: #2563eb;
+    margin-bottom: 1em;
+}
+
+#return-policy p {
+    font-size: 1.2em;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 1.5em;
+}
+
+#return-policy ul {
+    list-style-type: disc;
+    padding-left: 2em;
+    color: #475569;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+#return-policy li {
+    margin-bottom: 0.5em;
+}
+
+/* Contact Us Section */
+#contact-us {
+    background-color: #f8fafc;
+    padding: 2em;
+    border-radius: 8px;
+}
+
+#contact-us h2 {
+    font-size: 2.2em;
+    color: #2563eb;
+    margin-bottom: 1em;
+}
+
+#contact-us p {
+    font-size: 1.2em;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 1.5em;
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    font-size: 1.1em;
+    color: #2563eb;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.8em;
+    font-size: 1.1em;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    margin-top: 0.5em;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    header .logo h1 {
+        font-size: 2em;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    main {
+        padding: 2em 1em;
+    }
+
+    .support-title h1 {
+        font-size: 2.5em;
+    }
+
+    #return-policy ul {
+        padding-left: 1.5em;
+    }
+
+    .form-group input, .form-group textarea {
+        font-size: 1em;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1em 3em;
+    }
+}

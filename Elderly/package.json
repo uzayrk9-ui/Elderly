@@ -1,0 +1,20 @@
+{
+  "name": "elder-ease",
+  "version": "1.0.0",
+  "description": "Online shopping platform with products for elderly people. Designed for accessibility, simplicity, and color-blind friendly usage.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "multer": "^2.2.0",
+    "nodemailer": "^9.0.1"
+  }
+}

@@ -1,0 +1,72 @@
+<%- include('partials/head', { title, css: 'myacc.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="account-overview">
+      <h2>My Account</h2>
+
+      <div class="profile-card">
+        <div class="profile-photo">
+          <img src="<%= user.photo ? user.photo : placeholder(user.name.charAt(0), 150, 150) %>"
+               alt="Profile photo"
+               onerror="this.onerror=null;this.src='<%= placeholder(user.name.charAt(0), 150, 150) %>'" />
+        </div>
+        <div class="profile-info">
+          <h3><%= user.name %></h3>
+          <p>Email: <%= user.email %></p>
+          <% if (user.phone) { %><p>Phone: <%= user.phone %></p><% } %>
+          <p>Member since: <%= user.created_at.split(' ')[0] %></p>
+          <button onclick="window.location.href='/account/edit'">Edit Profile</button>
+        </div>
+      </div>
+
+      <div class="account-card">
+        <h3>Recent Orders <% if (totalOrders) { %><span class="order-meta">(<%= totalOrders %> total)</span><% } %></h3>
+        <% if (orders.length === 0) { %>
+          <p>You have no orders yet.</p>
+        <% } else { %>
+          <ul class="order-list">
+            <% orders.forEach(function(o) { %>
+              <li>
+                <div class="order-line-main">
+                  <a href="/account/orders/<%= o.id %>">Order #<%= o.id %></a>
+                  <span class="status-badge status-<%= o.status.toLowerCase() %>"><%= o.status %></span>
+                  <span class="order-meta"><%= money(o.total) %></span>
+                </div>
+                <div class="order-line-sub">
+                  <span class="order-meta"><%= formatDate(o.created_at) %></span> ·
+                  <%= o.items.map(function(i){ return i.name + ' ×' + i.quantity; }).join(', ') %>
+                  <a href="/account/orders/<%= o.id %>" class="view-details">View &raquo;</a>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+
+          <% if (totalPages > 1) { %>
+            <div class="order-pagination">
+              <% if (page > 1) { %>
+                <a href="/account?page=<%= page - 1 %>" class="btn-page">&laquo; Newer</a>
+              <% } else { %>
+                <span class="btn-page disabled">&laquo; Newer</span>
+              <% } %>
+              <span class="page-number">Page <%= page %> of <%= totalPages %></span>
+              <% if (page < totalPages) { %>
+                <a href="/account?page=<%= page + 1 %>" class="btn-page">Older &raquo;</a>
+              <% } else { %>
+                <span class="btn-page disabled">Older &raquo;</span>
+              <% } %>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+
+      <div class="account-card">
+        <h3>Saved Address</h3>
+        <ul>
+          <li><%= user.address ? user.address : 'No address on file. Add one from Edit Profile.' %></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,42 @@
+<%- include('partials/head', { title, css: 'shopmore.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section id="more-products">
+      <h2>My Wishlist</h2>
+
+      <% if (items.length === 0) { %>
+        <p class="empty-cart">Your wishlist is empty. <a href="/shop">Browse products &raquo;</a></p>
+      <% } else { %>
+        <div class="products">
+          <% items.forEach(function(p) { %>
+            <div class="product-card">
+              <%- include('partials/wishlist-button', { wp: p }) %>
+              <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name) %>'" /></a>
+              <h3><a href="/product/<%= p.id %>"><%= p.name %></a></h3>
+              <p><%= p.description %></p>
+              <p class="price"><%= money(p.price) %></p>
+              <% if (p.stock <= 0) { %>
+                <p class="stock-status out">Out of stock</p>
+                <button class="buy-now" disabled>Out of Stock</button>
+              <% } else { %>
+                <% if (p.stock <= 5) { %><p class="stock-status low">Only <%= p.stock %> left</p><% } %>
+                <form action="/cart/add" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= p.id %>" />
+                  <button type="submit" class="buy-now">Add to Cart</button>
+                </form>
+              <% } %>
+              <form action="/wishlist/remove" method="POST" class="inline-form">
+                <%- include('partials/csrf') %>
+                <input type="hidden" name="productId" value="<%= p.id %>" />
+                <button type="submit" class="view-details" style="background:none;border:none;cursor:pointer;">Remove</button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+<%- include('partials/footer') %>

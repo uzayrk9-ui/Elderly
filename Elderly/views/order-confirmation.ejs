@@ -1,0 +1,59 @@
+<%- include('partials/head', { title, css: 'confirmation.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <div class="email-card">
+      <div class="email-banner">
+        <h1>Elder Ease</h1>
+      </div>
+
+      <div class="email-body">
+        <div class="confirm-check">&#10003;</div>
+        <h2>Thank you for your order!</h2>
+        <p class="confirm-sub">
+          Your order <strong>#<%= order.id %></strong> has been received and is now
+          <span class="status-badge status-<%= order.status.toLowerCase() %>"><%= order.status %></span>.
+        </p>
+
+        <p class="confirm-greeting">Hi <%= user.name %>, here is your receipt:</p>
+
+        <table class="email-table">
+          <thead>
+            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>
+          </thead>
+          <tbody>
+            <% order.items.forEach(function(i) { %>
+              <tr>
+                <td><%= i.name %></td>
+                <td><%= i.quantity %></td>
+                <td><%= money(i.price) %></td>
+                <td><%= money(i.price * i.quantity) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="3">Total</td><td><%= money(order.total) %></td></tr>
+          </tfoot>
+        </table>
+
+        <% if (user.address) { %>
+          <div class="ship-to">
+            <h3>Shipping to</h3>
+            <p><%= user.name %><br><%= user.address %></p>
+          </div>
+        <% } %>
+
+        <div class="confirm-actions">
+          <a href="/account/orders/<%= order.id %>" class="btn-primary">View Order</a>
+          <a href="/shop" class="btn-outline">Continue Shopping</a>
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <p>A confirmation email has been sent to <strong><%= user.email %></strong> · placed <%= formatDate(order.created_at) %>.</p>
+        <p>Questions about your order? Visit our <a href="/support">Support</a> page.</p>
+      </div>
+    </div>
+  </main>
+
+<%- include('partials/footer') %>

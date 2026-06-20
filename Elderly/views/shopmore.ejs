@@ -1,0 +1,63 @@
+<%- include('partials/head', { title, css: 'shopmore.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section id="more-products">
+      <h2><%= department === 'all' ? 'Shop All Products' : department %></h2>
+      <p class="shop-count"><%= total %> product<%= total === 1 ? '' : 's' %><%= department === 'all' ? '' : ' in ' + department %></p>
+
+      <div class="category-filter">
+        <a href="/shop" class="filter-tab<%= department === 'all' ? ' active' : '' %>">All</a>
+        <% departments.forEach(function(d) { %>
+          <a href="/shop?department=<%= encodeURIComponent(d) %>" class="filter-tab<%= department === d ? ' active' : '' %>"><%= d %></a>
+        <% }) %>
+      </div>
+
+      <% if (products.length === 0) { %>
+        <p class="empty-cart">No products in this department yet.</p>
+      <% } %>
+
+      <div class="products">
+        <% products.forEach(function(p) { %>
+          <div class="product-card">
+            <%- include('partials/wishlist-button', { wp: p }) %>
+            <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name) %>'" /></a>
+            <h3><a href="/product/<%= p.id %>"><%= p.name %></a></h3>
+            <p><%= p.description %></p>
+            <p class="price"><%= money(p.price) %></p>
+            <% if (p.stock <= 0) { %>
+              <p class="stock-status out">Out of stock</p>
+              <button class="buy-now" disabled>Out of Stock</button>
+            <% } else { %>
+              <% if (p.stock <= 5) { %><p class="stock-status low">Only <%= p.stock %> left</p><% } %>
+              <form action="/cart/add" method="POST" class="inline-form">
+                <%- include('partials/csrf') %>
+                <input type="hidden" name="productId" value="<%= p.id %>" />
+                <button type="submit" class="buy-now">Add to Cart</button>
+              </form>
+            <% } %>
+            <a href="/product/<%= p.id %>" class="view-details">View Details &raquo;</a>
+          </div>
+        <% }) %>
+      </div>
+
+      <% const deptParam = department === 'all' ? '' : '&department=' + encodeURIComponent(department); %>
+      <% if (totalPages > 1) { %>
+      <div class="pagination">
+        <% if (page > 1) { %>
+          <button onclick="window.location.href='/shop?page=<%= page - 1 %><%= deptParam %>'">&laquo; Prev</button>
+        <% } else { %>
+          <button disabled>&laquo; Prev</button>
+        <% } %>
+        <span class="page-number">Page <%= page %> of <%= totalPages %></span>
+        <% if (page < totalPages) { %>
+          <button onclick="window.location.href='/shop?page=<%= page + 1 %><%= deptParam %>'">Next &raquo;</button>
+        <% } else { %>
+          <button disabled>Next &raquo;</button>
+        <% } %>
+      </div>
+      <% } %>
+    </section>
+  </main>
+
+<%- include('partials/footer') %>

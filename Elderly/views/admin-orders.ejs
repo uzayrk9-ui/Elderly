@@ -1,0 +1,53 @@
+<%- include('partials/head', { title, css: 'admin.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="admin-header">
+      <h1>Orders</h1>
+      <a href="/admin/orders/export.csv" class="btn-primary">Export CSV</a>
+    </section>
+    <%- include('partials/admin-nav', { adminTab: 'orders' }) %>
+
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(function(o) { %>
+          <tr>
+            <td><a href="/admin/orders/<%= o.id %>">#<%= o.id %></a></td>
+            <td>
+              <%= o.customer_name %><br>
+              <small class="muted"><%= o.customer_email %></small>
+            </td>
+            <td><%= formatDate(o.created_at) %></td>
+            <td class="items-cell"><%= o.items.map(function(i){ return i.name + ' ×' + i.quantity; }).join(', ') %></td>
+            <td><%= money(o.total) %></td>
+            <td>
+              <div class="current-status">
+                <span class="status-badge status-<%= o.status.toLowerCase() %>"><%= o.status %></span>
+              </div>
+              <form action="/admin/orders/<%= o.id %>/status" method="POST" class="status-form">
+                <%- include('partials/csrf') %>
+                <select name="status" aria-label="Update status for order <%= o.id %>">
+                  <% statuses.forEach(function(s) { %>
+                    <option value="<%= s %>" <%= o.status === s ? 'selected' : '' %>><%= s %></option>
+                  <% }) %>
+                </select>
+                <button type="submit" class="btn-small">Update</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+
+<%- include('partials/footer') %>

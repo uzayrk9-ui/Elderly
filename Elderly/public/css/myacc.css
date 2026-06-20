@@ -1,0 +1,196 @@
+/* General Reset */
+body, h1, h2, p, ul, img {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Header Styling */
+header {
+    background-color: #2563eb;
+    color: white;
+    padding: 1.5em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+header .logo h1 {
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #f97316;
+}
+
+/* Main Section */
+main {
+    padding: 3em 2em;
+    background: linear-gradient(to right, #ffffff, #f1f5f9);
+}
+
+.account-overview {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.account-overview h2 {
+    font-size: 2.5em;
+    margin-bottom: 2em;
+    color: #2563eb;
+}
+
+/* Profile Card */
+.profile-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 2em;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.5em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #2563eb;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-photo img:hover {
+    transform: scale(1.1);
+}
+
+.profile-info {
+    margin-left: 2em;
+    text-align: left;
+}
+
+.profile-info h3 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    color: #1e293b;
+}
+
+.profile-info p {
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #475569;
+}
+
+.profile-info button {
+    padding: 1em 2em;
+    background-color: #2563eb;
+    color: white;
+    font-size: 1.1em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-info button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Account Card */
+.account-card {
+    background-color: white;
+    padding: 2em;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.account-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.account-card h3 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    color: #1e293b;
+}
+
+.account-card ul {
+    list-style-type: disc;
+    margin-left: 1.5em;
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #475569;
+}
+
+/* Buttons */
+button {
+    padding: 1em 2em;
+    background-color: #2563eb;
+    color: white;
+    font-size: 1.1em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Footer */
+footer {
+    background-color: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 1.5em;
+    margin-top: 4em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-photo img {
+        margin-bottom: 1em;
+    }
+
+    .profile-info {
+        margin-left: 0;
+    }
+
+    .account-overview {
+        padding: 2em;
+    }
+}

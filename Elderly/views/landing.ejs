@@ -1,0 +1,128 @@
+<%- include('partials/head', { title, css: 'landing.css' }) %>
+
+  <div class="landing">
+    <!-- Glassmorphic top navigation (z-10) -->
+    <nav class="landing-nav" aria-label="Primary">
+      <a href="/" class="landing-logo">Elder Ease<sup>&reg;</sup></a>
+      <ul class="landing-menu">
+        <li><a href="/" class="is-active">Home</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/cart">Cart<% if (cartCount > 0) { %> <span class="cart-count"><%= cartCount %></span><% } %></a></li>
+        <% if (user) { %>
+          <li><a href="/wishlist">Wishlist</a></li>
+          <li><a href="/account">Account</a></li>
+        <% } else { %>
+          <li><a href="/support">Support</a></li>
+          <li><a href="/login">Log In</a></li>
+        <% } %>
+      </ul>
+      <a href="/shop" class="landing-cta">Start Shopping</a>
+    </nav>
+
+    <% if (flash) { %><div class="flash flash-<%= flash.type %>" style="position:relative;z-index:20;max-width:1000px;"><%= flash.msg %></div><% } %>
+
+    <!-- Cinematic hero with looping video background -->
+    <section class="hero">
+      <div class="hero-video-wrap">
+        <video id="hero-video" class="hero-video" muted playsinline autoplay preload="auto" aria-hidden="true">
+          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero-video-overlay" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <h1 class="hero-headline fade-rise">
+          Independent living,<br><em>made beautifully simple.</em>
+        </h1>
+        <p class="hero-desc fade-rise-delay">
+          Carefully chosen products for brilliant, independent lives — with large text,
+          clear buttons, and a calm design crafted for comfort, confidence, and pure ease.
+        </p>
+        <div class="hero-actions fade-rise-delay-2">
+          <a href="/shop" class="hero-btn">Start Shopping</a>
+          <a href="/support" class="hero-btn-ghost">Talk to us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust signals -->
+    <ul class="trust-strip">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div><strong>Free shipping</strong><span>On orders over &#8377;2,000</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v4h4"/></svg>
+        <div><strong>Easy returns</strong><span>30 days, no fuss</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2" y="12" width="4" height="7" rx="1.5"/><rect x="18" y="12" width="4" height="7" rx="1.5"/><path d="M20 19a4 4 0 0 1-4 4h-2"/></svg>
+        <div><strong>Friendly support</strong><span>Real people, any time</span></div>
+      </li>
+    </ul>
+
+    <main class="landing-main">
+      <section class="land-section">
+        <h2 class="land-h2">Featured Products</h2>
+        <div class="products">
+          <% featured.forEach(function(p) { %>
+            <div class="product-card">
+              <%- include('partials/wishlist-button', { wp: p }) %>
+              <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name) %>'" /></a>
+              <h3><a href="/product/<%= p.id %>"><%= p.name %></a></h3>
+              <p><%= p.description %></p>
+              <p class="price"><%= money(p.price) %></p>
+              <% if (p.stock > 0) { %>
+                <form action="/cart/add" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= p.id %>" />
+                  <button type="submit" class="buy-now">Add to Cart</button>
+                </form>
+              <% } else { %>
+                <p class="stock-status out">Out of stock</p>
+                <button class="buy-now" disabled>Out of Stock</button>
+              <% } %>
+              <a href="/product/<%= p.id %>" class="view-details">View Details &raquo;</a>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <section class="land-section">
+        <h2 class="land-h2">Popular Products</h2>
+        <div class="products">
+          <% popular.forEach(function(p) { %>
+            <div class="product-card">
+              <%- include('partials/wishlist-button', { wp: p }) %>
+              <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name) %>'" /></a>
+              <h3><a href="/product/<%= p.id %>"><%= p.name %></a></h3>
+              <p><%= p.description %></p>
+              <p class="price"><%= money(p.price) %></p>
+              <% if (p.stock > 0) { %>
+                <form action="/cart/add" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= p.id %>" />
+                  <button type="submit" class="buy-now">Add to Cart</button>
+                </form>
+              <% } else { %>
+                <p class="stock-status out">Out of stock</p>
+                <button class="buy-now" disabled>Out of Stock</button>
+              <% } %>
+              <a href="/product/<%= p.id %>" class="view-details">View Details &raquo;</a>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- Closing call to action -->
+      <section class="closing-cta">
+        <h2>Everything for comfortable, independent living.</h2>
+        <p>Browse the full range and find exactly what you need — delivered with care.</p>
+        <a href="/shop" class="hero-btn">Browse all products</a>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/hero-video.js" defer></script>
+
+<%- include('partials/footer') %>

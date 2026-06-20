@@ -1,0 +1,56 @@
+<%- include('partials/head', { title, css: 'editprofile.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="edit-profile-title">
+      <h1>Edit Profile</h1>
+      <p>Update your personal details below.</p>
+    </section>
+
+    <form id="edit-profile-form" action="/account/edit" method="POST" enctype="multipart/form-data">
+      <%- include('partials/csrf') %>
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" value="<%= user.name %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="<%= user.email %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" value="<%= user.phone %>" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="3"><%= user.address %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="photo">Profile Photo</label>
+        <div id="photo-preview">
+          <img id="preview-img"
+               src="<%= user.photo ? user.photo : placeholder(user.name.charAt(0), 150, 150) %>"
+               alt="Profile preview" />
+        </div>
+        <input type="file" id="photo" name="photo" accept="image/*" />
+        <small style="color:#777;display:block;margin-top:0.5em;">JPG or PNG, up to 2 MB.</small>
+      </div>
+
+      <button type="submit" class="submit-btn">Save Changes</button>
+    </form>
+  </main>
+
+  <script>
+    const photoInput = document.getElementById('photo');
+    const previewImg = document.getElementById('preview-img');
+    photoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) previewImg.src = URL.createObjectURL(file);
+    });
+  </script>
+
+<%- include('partials/footer') %>

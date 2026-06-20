@@ -1,0 +1,367 @@
+/* General Reset */
+body, h1, h2, h3, p, ul, img, table {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+}
+
+body { background-color: #f8fafc; }
+
+/* Header (matches the rest of the site) */
+header {
+    background-color: #2563eb;
+    color: white;
+    padding: 1.5em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+header .logo h1 { font-size: 2.2em; letter-spacing: 1px; }
+nav ul { list-style: none; display: flex; gap: 2em; }
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+nav ul li a:hover { color: #f97316; }
+
+/* Main */
+main {
+    padding: 3em 2em;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+.admin-header h1 { font-size: 2.4em; color: #2563eb; }
+
+/* Buttons */
+.btn-primary {
+    background-color: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.8em 1.5em;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+.btn-primary:hover { background-color: #1d4ed8; }
+
+.btn-small {
+    display: inline-block;
+    background-color: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.btn-small:hover { background-color: #1d4ed8; }
+.btn-danger { background-color: #dc2626; }
+.btn-danger:hover { background-color: #b91c1c; }
+
+/* Admin sub-navigation */
+.admin-subnav {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 2em;
+  border-bottom: 2px solid #dbeafe;
+}
+.admin-subnav a {
+  text-decoration: none;
+  color: #2563eb;
+  padding: 0.7em 1.3em;
+  font-size: 1.05em;
+  font-weight: 500;
+  border-radius: 6px 6px 0 0;
+}
+.admin-subnav a:hover { background: #eff6ff; }
+.admin-subnav a.active { background: #2563eb; color: #fff; }
+
+/* Dashboard stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.2em;
+  margin-bottom: 2.5em;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5em;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.stat-value { font-size: 1.9em; font-weight: bold; color: #2563eb; }
+.stat-label { color: #475569; margin-top: 0.4em; font-size: 1.02em; }
+.stat-label small { color: #94a3b8; }
+
+.dash-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  margin-bottom: 2em;
+}
+.dash-panel { margin-bottom: 2em; }
+.dash-panel h2 { font-size: 1.4em; color: #2563eb; margin-bottom: 0.8em; }
+@media (max-width: 768px) {
+  .dash-columns { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* Stock pills + dashboard date filter */
+.stock-pill {
+  display: inline-block;
+  min-width: 2.2em;
+  text-align: center;
+  padding: 0.2em 0.6em;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.95em;
+}
+.stock-pill.in { background: #e3f5e8; color: #1b6b34; }
+.stock-pill.low { background: #fff2d6; color: #9a6700; }
+.stock-pill.out { background: #fde7e7; color: #a11d1d; }
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 1em 1.3em;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2em;
+}
+.date-filter label { color: #1e293b; font-size: 1.02em; }
+.date-filter input[type="date"] {
+  padding: 0.45em 0.6em;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  font-size: 1em;
+  margin-left: 0.3em;
+}
+.btn-clear { background-color: #64748b; }
+.btn-clear:hover { background-color: #475569; }
+.filter-note { color: #2563eb; font-weight: 500; }
+
+/* Product table */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.admin-table th, .admin-table td {
+    padding: 1em;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+.admin-table th {
+    background-color: #dbeafe;
+    color: #2563eb;
+    font-size: 1.05em;
+}
+.admin-table td a { color: #2563eb; text-decoration: none; font-weight: 500; }
+.admin-table td a:hover { text-decoration: underline; }
+
+.admin-thumb {
+    width: 70px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 5px;
+    background: #dbeafe;
+}
+.cat-badge {
+    background-color: #dbeafe;
+    color: #2563eb;
+    padding: 0.25em 0.8em;
+    border-radius: 999px;
+    font-size: 0.9em;
+    text-transform: capitalize;
+}
+.admin-actions { display: flex; gap: 0.5em; align-items: center; }
+.inline-form { display: inline; margin: 0; }
+
+/* Admin header actions + order status controls */
+.admin-header-actions { display: flex; gap: 0.8em; align-items: center; flex-wrap: wrap; }
+.muted { color: #64748b; }
+.items-cell { max-width: 240px; font-size: 0.95em; color: #475569; }
+.current-status { margin-bottom: 0.5em; }
+.status-form { display: flex; gap: 0.5em; align-items: center; }
+.status-form select {
+  padding: 0.45em 0.6em;
+  font-size: 0.95em;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  background: #fff;
+}
+
+/* Add/Edit form */
+.admin-form {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 640px;
+}
+.form-group { margin-bottom: 1.5em; }
+.form-row { display: flex; gap: 1.5em; }
+.form-row .form-group { flex: 1; }
+.admin-form label {
+    font-size: 1.1em;
+    color: #2563eb;
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+}
+.admin-form input[type="text"],
+.admin-form input[type="number"],
+.admin-form input[type="url"],
+.admin-form select,
+.admin-form textarea {
+    width: 100%;
+    padding: 0.8em;
+    font-size: 1.05em;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+}
+.admin-form input[type="file"] { margin-top: 0.5em; }
+.admin-form small { display: block; color: #64748b; margin: 0.5em 0; }
+.admin-form textarea { resize: vertical; }
+.current-image img {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 0.5em;
+}
+.submit-btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.submit-btn:hover { background-color: #1d4ed8; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 1em; text-align: center; }
+    nav ul { flex-direction: column; gap: 1em; align-items: center; }
+    .form-row { flex-direction: column; gap: 0; }
+    .admin-table th:nth-child(1),
+    .admin-table td:nth-child(1) { display: none; }
+}
+
+/* =========================================================================
+   Admin polish — dashboard, tables, sub-nav (Warm Civic Trust)
+   ========================================================================= */
+
+/* Page header */
+.admin-header h1 { font-family: 'Rubik', sans-serif; font-weight: 700; }
+
+/* Sub-nav as clean pill tabs */
+.admin-subnav {
+  gap: 0.4em;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 2.2em;
+  padding-bottom: 0.4em;
+}
+.admin-subnav a {
+  border-radius: 10px;
+  font-family: 'Rubik', sans-serif;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.admin-subnav a.active { box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25); }
+
+/* Stat cards — accent stripe, big Rubik numbers, gentle hover */
+.stat-grid { gap: 1.4em; }
+.stat-card {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.6em 1.4em;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.07);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+}
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
+/* Highlight the headline revenue card with the warm accent */
+.stat-card:first-child::before { background: linear-gradient(90deg, #f97316, #fdba74); }
+.stat-value { font-family: 'Rubik', sans-serif; font-size: 2.1em; font-weight: 700; }
+.stat-label { font-size: 1.05em; }
+
+/* Dashboard panels: heading with accent underline + carded tables */
+.dash-panel h2 {
+  font-family: 'Rubik', sans-serif;
+  position: relative;
+  padding-bottom: 0.4em;
+  margin-bottom: 1em;
+}
+.dash-panel h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 48px; height: 3px;
+  border-radius: 999px;
+  background: #f97316;
+}
+
+/* Tables: rounded, hover rows, comfortable */
+.admin-table { border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+.admin-table thead th { font-family: 'Rubik', sans-serif; font-weight: 600; }
+.admin-table tbody tr { transition: background 0.15s ease; }
+.admin-table tbody tr:hover { background: #f8fafc; }
+.admin-table td a { font-weight: 600; }
+
+/* Date filter as a clean toolbar card */
+.date-filter {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+.date-filter label { font-family: 'Rubik', sans-serif; font-weight: 500; }
+
+/* Buttons in admin pick up the global rounding/lift */
+.btn-primary, .btn-small {
+  border-radius: 10px;
+  font-family: 'Rubik', sans-serif;
+  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+}
+.btn-primary:hover, .btn-small:hover { transform: translateY(-1px); }
+
+/* Admin form card */
+.admin-form { border: 1px solid #e2e8f0; border-radius: 16px; }
+
+/* Product/stock pills already styled; ensure crisp alignment */
+.stock-pill { font-family: 'Rubik', sans-serif; }
+
+.admin-subtitle { color: #64748b; font-size: 1.05em; margin-top: 0.2em; }

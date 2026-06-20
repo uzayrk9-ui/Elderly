@@ -1,0 +1,5 @@
+<nav class="admin-subnav">
+  <a href="/admin"<%= typeof adminTab !== 'undefined' && adminTab === 'dashboard' ? ' class="active"' : '' %>>Dashboard</a>
+  <a href="/admin/products"<%= typeof adminTab !== 'undefined' && adminTab === 'products' ? ' class="active"' : '' %>>Products</a>
+  <a href="/admin/orders"<%= typeof adminTab !== 'undefined' && adminTab === 'orders' ? ' class="active"' : '' %>>Orders</a>
+</nav>

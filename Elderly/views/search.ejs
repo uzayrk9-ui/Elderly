@@ -1,0 +1,41 @@
+<%- include('partials/head', { title, css: 'shopmore.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section id="more-products">
+      <% if (!q) { %>
+        <h2>Search Products</h2>
+        <p class="empty-cart">Type something in the search box above to find products.</p>
+      <% } else if (results.length === 0) { %>
+        <h2>No results for “<%= q %>”</h2>
+        <p class="empty-cart">Try a different word, or <a href="/shop">browse all products &raquo;</a></p>
+      <% } else { %>
+        <h2><%= results.length %> result<%= results.length === 1 ? '' : 's' %> for “<%= q %>”</h2>
+        <div class="products">
+          <% results.forEach(function(p) { %>
+            <div class="product-card">
+              <%- include('partials/wishlist-button', { wp: p }) %>
+              <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name) %>'" /></a>
+              <h3><a href="/product/<%= p.id %>"><%= p.name %></a></h3>
+              <p><%= p.description %></p>
+              <p class="price"><%= money(p.price) %></p>
+              <% if (p.stock <= 0) { %>
+                <p class="stock-status out">Out of stock</p>
+                <button class="buy-now" disabled>Out of Stock</button>
+              <% } else { %>
+                <% if (p.stock <= 5) { %><p class="stock-status low">Only <%= p.stock %> left</p><% } %>
+                <form action="/cart/add" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= p.id %>" />
+                  <button type="submit" class="buy-now">Add to Cart</button>
+                </form>
+              <% } %>
+              <a href="/product/<%= p.id %>" class="view-details">View Details &raquo;</a>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+<%- include('partials/footer') %>

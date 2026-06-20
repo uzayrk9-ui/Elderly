@@ -1,0 +1,59 @@
+<%- include('partials/head', { title, css: 'cart.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="cart-title">
+      <h1>Your Cart</h1>
+      <p>Review your items below before checking out.</p>
+    </section>
+
+    <% if (items.length === 0) { %>
+      <p class="empty-cart">Your cart is empty. <a href="/shop">Browse products &raquo;</a></p>
+    <% } else { %>
+      <section class="cart-items">
+        <% items.forEach(function(item) { %>
+          <div class="cart-item">
+            <a href="/product/<%= item.id %>"><img src="<%= item.image %>" alt="<%= item.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(item.name, 150, 150) %>'" /></a>
+            <div class="item-details">
+              <h3><a href="/product/<%= item.id %>"><%= item.name %></a></h3>
+              <p><%= item.description %></p>
+              <% if (item.overStock) { %>
+                <p class="stock-status out">Only <%= item.stock %> in stock — please reduce quantity.</p>
+              <% } %>
+              <div class="quantity-controls">
+                <form action="/cart/update" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= item.id %>" />
+                  <input type="hidden" name="action" value="dec" />
+                  <button type="submit">-</button>
+                </form>
+                <span><%= item.quantity %></span>
+                <form action="/cart/update" method="POST" class="inline-form">
+                  <%- include('partials/csrf') %>
+                  <input type="hidden" name="productId" value="<%= item.id %>" />
+                  <input type="hidden" name="action" value="inc" />
+                  <button type="submit">+</button>
+                </form>
+              </div>
+            </div>
+            <p class="price"><%= money(item.lineTotal) %></p>
+            <form action="/cart/remove" method="POST" class="inline-form">
+              <%- include('partials/csrf') %>
+              <input type="hidden" name="productId" value="<%= item.id %>" />
+              <button type="submit" class="remove-item">Remove</button>
+            </form>
+          </div>
+        <% }) %>
+      </section>
+
+      <section class="cart-summary">
+        <p>Total: <%= money(total) %></p>
+        <form action="/cart/checkout" method="POST" class="inline-form">
+          <%- include('partials/csrf') %>
+          <button type="submit" class="checkout-button">Proceed to Checkout</button>
+        </form>
+      </section>
+    <% } %>
+  </main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,63 @@
+<%- include('partials/head', { title, css: 'myacc.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="account-overview">
+      <h2>Order #<%= order.id %></h2>
+
+      <div class="account-card" style="text-align:left;">
+        <p class="order-meta" style="margin-bottom:1em;">
+          Placed on <%= formatDate(order.created_at) %> ·
+          Status: <span class="status-badge status-<%= order.status.toLowerCase() %>"><%= order.status %></span>
+        </p>
+
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.items.forEach(function(i) { %>
+              <tr>
+                <td><%= i.name %></td>
+                <td><%= money(i.price) %></td>
+                <td><%= i.quantity %></td>
+                <td><%= money(i.price * i.quantity) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="order-total-label">Total</td>
+              <td class="order-total"><%= money(order.total) %></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="order-actions" style="margin-top:1.5em;">
+          <form action="/account/orders/<%= order.id %>/reorder" method="POST" class="inline-form">
+            <%- include('partials/csrf') %>
+            <button type="submit" class="reorder-btn">Reorder</button>
+          </form>
+          <% if (order.status === 'Processing') { %>
+            <form action="/account/orders/<%= order.id %>/cancel" method="POST" class="inline-form"
+                  onsubmit="return confirm('Cancel order #<%= order.id %>? This cannot be undone.');">
+              <%- include('partials/csrf') %>
+              <button type="submit" class="cancel-order-btn">Cancel Order</button>
+            </form>
+          <% } %>
+        </div>
+        <% if (order.status === 'Cancelled') { %>
+          <p class="cancelled-note" style="margin-top:1em;">This order was cancelled.</p>
+        <% } %>
+      </div>
+
+      <a href="/account" class="back-link">&laquo; Back to My Account</a>
+    </section>
+  </main>
+
+<%- include('partials/footer') %>

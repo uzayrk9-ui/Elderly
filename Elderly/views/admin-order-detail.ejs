@@ -1,0 +1,58 @@
+<%- include('partials/head', { title, css: 'admin.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <section class="admin-header">
+      <h1>Order #<%= order.id %></h1>
+      <a href="/admin/orders" class="btn-small">&laquo; Back to Orders</a>
+    </section>
+
+    <div class="admin-form" style="max-width:760px;">
+      <p class="order-meta" style="margin-bottom:1em;">
+        Placed on <%= formatDate(order.created_at) %> ·
+        Status: <span class="status-badge status-<%= order.status.toLowerCase() %>"><%= order.status %></span>
+      </p>
+
+      <h3 style="color:#0044cc;margin-bottom:0.5em;">Customer</h3>
+      <p style="color:#555;line-height:1.7;margin-bottom:1.5em;">
+        <%= order.customer_name %><br>
+        <%= order.customer_email %><br>
+        <% if (order.customer_address) { %><%= order.customer_address %><% } else { %><span class="muted">No address on file</span><% } %>
+      </p>
+
+      <table class="order-table">
+        <thead>
+          <tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <% order.items.forEach(function(i) { %>
+            <tr>
+              <td><%= i.name %></td>
+              <td><%= money(i.price) %></td>
+              <td><%= i.quantity %></td>
+              <td><%= money(i.price * i.quantity) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="order-total-label">Total</td>
+            <td class="order-total"><%= money(order.total) %></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <h3 style="color:#0044cc;margin:1.5em 0 0.5em;">Update Status</h3>
+      <form action="/admin/orders/<%= order.id %>/status" method="POST" class="status-form">
+        <%- include('partials/csrf') %>
+        <select name="status" aria-label="Update status for order <%= order.id %>">
+          <% statuses.forEach(function(s) { %>
+            <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+        <button type="submit" class="btn-small">Update</button>
+      </form>
+    </div>
+  </main>
+
+<%- include('partials/footer') %>

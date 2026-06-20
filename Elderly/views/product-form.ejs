@@ -1,0 +1,73 @@
+<%- include('partials/head', { title, css: 'admin.css' }) %>
+<%- include('partials/header') %>
+
+  <%
+    const isEdit = !!product;
+    const action = isEdit ? ('/admin/products/' + product.id) : '/admin/products';
+    const cur = product || { name: '', description: '', price: '', category: 'more', image: '', department: 'Daily Living' };
+  %>
+
+  <main>
+    <section class="admin-header">
+      <h1><%= isEdit ? 'Edit Product' : 'Add Product' %></h1>
+      <a href="/admin/products" class="btn-small">&laquo; Back to list</a>
+    </section>
+
+    <form class="admin-form" action="<%= action %>" method="POST" enctype="multipart/form-data">
+      <%- include('partials/csrf') %>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="<%= cur.name %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3"><%= cur.description %></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price (₹)</label>
+          <input type="number" id="price" name="price" min="0" step="1" value="<%= cur.price %>" required />
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input type="number" id="stock" name="stock" min="0" step="1" value="<%= cur.stock === undefined || cur.stock === '' ? 0 : cur.stock %>" required />
+        </div>
+        <div class="form-group">
+          <label for="category">Home Section</label>
+          <select id="category" name="category">
+            <% categories.forEach(function(c) { %>
+              <option value="<%= c %>" <%= cur.category === c ? 'selected' : '' %>><%= c %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select id="department" name="department">
+            <% departments.forEach(function(d) { %>
+              <option value="<%= d %>" <%= cur.department === d ? 'selected' : '' %>><%= d %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Product Image</label>
+        <% if (cur.image) { %>
+          <div class="current-image">
+            <img src="<%= cur.image %>" alt="Current image"
+                 onerror="this.onerror=null;this.src='<%= placeholder('No image', 200, 150) %>'" />
+          </div>
+        <% } %>
+        <input type="file" id="image" name="image" accept="image/*" />
+        <small>Upload a JPG/PNG (up to 2 MB), or paste an image URL below.</small>
+        <input type="url" name="imageUrl" placeholder="https://example.com/photo.jpg"
+               value="<%= cur.image && cur.image.indexOf('/uploads/') !== 0 ? cur.image : '' %>" />
+      </div>
+
+      <button type="submit" class="submit-btn"><%= isEdit ? 'Save Changes' : 'Add Product' %></button>
+    </form>
+  </main>
+
+<%- include('partials/footer') %>

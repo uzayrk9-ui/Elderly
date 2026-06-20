@@ -1,0 +1,116 @@
+/* General Reset */
+body, h1, h2, h3, p, ul, table { margin: 0; padding: 0; font-family: 'Arial', sans-serif; box-sizing: border-box; }
+body { background-color: #eff6ff; }
+
+/* Header (matches the rest of the site) */
+header {
+    background-color: #2563eb;
+    color: white;
+    padding: 1.5em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+header .logo h1 { font-size: 2.2em; letter-spacing: 1px; }
+nav ul { list-style: none; display: flex; gap: 2em; }
+nav ul li a { color: white; text-decoration: none; font-size: 1.1em; font-weight: 500; transition: color 0.3s ease; }
+nav ul li a:hover { color: #f97316; }
+
+main { padding: 3em 1em; }
+
+/* Email-style receipt card */
+.email-card {
+    max-width: 620px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+.email-banner {
+    background-color: #2563eb;
+    color: #fff;
+    text-align: center;
+    padding: 1.8em;
+}
+.email-banner h1 { font-size: 2em; letter-spacing: 1px; }
+
+.email-body { padding: 2.5em 2.5em 1.5em; text-align: center; }
+.confirm-check {
+    width: 70px; height: 70px;
+    margin: 0 auto 1em;
+    background: #1b6b34;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 2.4em;
+    line-height: 70px;
+}
+.email-body h2 { font-size: 1.8em; color: #2563eb; margin-bottom: 0.5em; }
+.confirm-sub { font-size: 1.15em; color: #475569; line-height: 1.7; margin-bottom: 1.5em; }
+.confirm-greeting { font-size: 1.1em; color: #1e293b; text-align: left; margin-bottom: 1em; }
+
+.email-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+    text-align: left;
+}
+.email-table th, .email-table td {
+    padding: 0.8em 0.6em;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 1.02em;
+}
+.email-table th { color: #2563eb; }
+.email-table td:last-child, .email-table th:last-child { text-align: right; }
+.email-table td:nth-child(2), .email-table th:nth-child(2),
+.email-table td:nth-child(3), .email-table th:nth-child(3) { text-align: center; }
+.email-table tfoot td {
+    border-top: 2px solid #2563eb;
+    border-bottom: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2563eb;
+    padding-top: 1em;
+}
+.email-table tfoot td:first-child { text-align: right; color: #1e293b; }
+
+.ship-to {
+    text-align: left;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 1.2em 1.5em;
+    margin-bottom: 2em;
+}
+.ship-to h3 { font-size: 1.1em; color: #2563eb; margin-bottom: 0.5em; }
+.ship-to p { color: #475569; line-height: 1.6; }
+
+.confirm-actions { display: flex; gap: 1em; justify-content: center; flex-wrap: wrap; }
+.btn-primary, .btn-outline {
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.9em 1.8em;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: all 0.2s ease;
+}
+.btn-primary { background-color: #2563eb; color: #fff; }
+.btn-primary:hover { background-color: #1d4ed8; }
+.btn-outline { border: 2px solid #2563eb; color: #2563eb; }
+.btn-outline:hover { background-color: #dbeafe; }
+
+.email-footer {
+    background: #f1f5f9;
+    text-align: center;
+    padding: 1.5em;
+    color: #64748b;
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+.email-footer a { color: #2563eb; font-weight: bold; text-decoration: none; }
+
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 1em; text-align: center; }
+    nav ul { flex-direction: column; gap: 1em; align-items: center; }
+    .email-body { padding: 2em 1.3em 1em; }
+}

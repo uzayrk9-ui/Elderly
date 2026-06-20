@@ -1,0 +1,71 @@
+<%- include('partials/head', { title, css: 'product.css' }) %>
+<%- include('partials/header') %>
+
+  <main>
+    <p class="breadcrumb">
+      <a href="/">Home</a> &raquo;
+      <a href="/shop">Shop</a> &raquo;
+      <%= product.name %>
+    </p>
+
+    <section class="product-detail">
+      <div class="product-image">
+        <img src="<%= product.image %>" alt="<%= product.name %>" onerror="this.onerror=null;this.src='<%= placeholder(product.name, 500, 380) %>'" />
+      </div>
+
+      <div class="product-info">
+        <h1><%= product.name %>
+          <span class="detail-wishlist"><%- include('partials/wishlist-button', { wp: product }) %></span>
+        </h1>
+        <span class="category-tag"><%= product.category %></span>
+        <p class="description"><%= product.description %></p>
+        <p class="price"><%= money(product.price) %></p>
+
+        <p class="stock-status <%= product.stock <= 0 ? 'out' : (product.stock <= 5 ? 'low' : 'in') %>">
+          <% if (product.stock <= 0) { %>Out of stock<% } else if (product.stock <= 5) { %>Only <%= product.stock %> left in stock<% } else { %>In stock<% } %>
+        </p>
+
+        <% if (product.stock > 0) { %>
+          <form class="purchase-form" action="/cart/add" method="POST">
+            <%- include('partials/csrf') %>
+            <input type="hidden" name="productId" value="<%= product.id %>" />
+            <div class="qty-field">
+              <label for="quantity">Quantity</label>
+              <input type="number" id="quantity" name="quantity" value="1" min="1" max="<%= product.stock %>" />
+            </div>
+            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+          </form>
+        <% } else { %>
+          <button class="add-to-cart-btn" disabled>Out of Stock</button>
+          <form action="/product/<%= product.id %>/notify-me" method="POST" style="margin-top:1em;">
+            <%- include('partials/csrf') %>
+            <button type="submit" class="notify-btn">Notify me when back in stock</button>
+          </form>
+        <% } %>
+
+        <ul class="highlights">
+          <li>Free returns within 30 days</li>
+          <li>Designed for easy, accessible use</li>
+          <li>Free shipping on orders over $50</li>
+        </ul>
+      </div>
+    </section>
+
+    <% if (related.length > 0) { %>
+      <section class="related-products">
+        <h2>You May Also Like</h2>
+        <div class="related-grid">
+          <% related.forEach(function(p) { %>
+            <div class="related-card">
+              <img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy" onerror="this.onerror=null;this.src='<%= placeholder(p.name, 300, 200) %>'" />
+              <h3><%= p.name %></h3>
+              <p class="price"><%= money(p.price) %></p>
+              <a href="/product/<%= p.id %>">View Details</a>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+  </main>
+
+<%- include('partials/footer') %>

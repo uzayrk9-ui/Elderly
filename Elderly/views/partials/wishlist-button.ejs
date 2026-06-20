@@ -1,0 +1,14 @@
+<% if (typeof user !== 'undefined' && user) { %>
+  <% var saved = wishlistIds.indexOf(wp.id) !== -1; %>
+  <form action="/wishlist/<%= saved ? 'remove' : 'add' %>" method="POST" class="inline-form wishlist-form">
+    <%- include('csrf') %>
+    <input type="hidden" name="productId" value="<%= wp.id %>" />
+    <button type="submit" class="wishlist-btn<%= saved ? ' saved' : '' %>"
+            title="<%= saved ? 'Remove from wishlist' : 'Save to wishlist' %>"
+            aria-label="<%= saved ? 'Remove from wishlist' : 'Save to wishlist' %>">
+      <%= saved ? '♥' : '♡' %>
+    </button>
+  </form>
+<% } else { %>
+  <a href="/login" class="wishlist-btn" title="Log in to save to wishlist" aria-label="Log in to save">♡</a>
+<% } %>
